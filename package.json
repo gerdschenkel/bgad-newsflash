@@ -1,0 +1,13 @@
+{
+  "name": "bgad-newsflash-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static host for the BGAD News Flash daily digest",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
