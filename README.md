@@ -26,9 +26,18 @@ railway up          # deploys this folder
 railway domain      # generates a public https://<name>.up.railway.app URL
 ```
 
-Option B, GitHub connected: push this folder to a repo, then in Railway choose
-New Project, Deploy from GitHub repo, pick it. Railway detects Node from
-`package.json` and runs `npm start`. Click Settings, Networking, Generate Domain.
+Option B, GitHub connected. This folder is already a git repo with one commit,
+branch `main`, and the remote set to
+`https://github.com/gerdschenkel/bgad-newsflash.git`. Create that repo on
+GitHub (empty, no README), then:
+
+```
+git push -u origin main
+```
+
+In Railway choose New Project, Deploy from GitHub repo, pick `bgad-newsflash`.
+Railway detects Node from `package.json` and runs `npm start`. Click Settings,
+Networking, Generate Domain. From then on every push redeploys the site.
 
 A custom domain like `newsflash.bgadconsulting.com` can be added under
 Settings, Networking, Custom Domain, then a CNAME at your DNS provider.
