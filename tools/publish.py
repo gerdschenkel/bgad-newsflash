@@ -92,11 +92,23 @@ def main():
     remote = f"https://x-access-token:{token}@{REPO}"
 
     if "--check" in sys.argv:
-        rc, out = git("ls-remote", "--heads", remote, BRANCH, token=token, check=False)
-        if rc != 0:
-            fail("token rejected by GitHub\n" + out)
-        print("token works, remote reachable")
-        return
+        # git ls-remote is not a real test: this repo is public, so a read
+        # succeeds even with a token that cannot write. A dry run push does
+        # exercise write permission without changing anything.
+        rc, out = git("push", "--dry-run", remote, f"HEAD:{BRANCH}",
+                      token=token, check=False)
+        if rc == 0:
+            print("token works and has write access, publishing will succeed")
+            return
+        if "403" in out or "denied" in out.lower():
+            fail(
+                "token is valid but cannot write, so pushes will be rejected",
+                "Open https://github.com/settings/personal-access-tokens, click\n"
+                "this token, and under Repository permissions set Contents to\n"
+                '"Read and write", then Save. Metadata read alone is not enough,\n'
+                "and read access looks fine here only because the repo is public.",
+            )
+        fail("dry run push failed\n" + out)
 
     message = sys.argv[1] if len(sys.argv) > 1 else "News Flash update"
 
