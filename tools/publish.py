@@ -49,12 +49,30 @@ def git(*args, token=None, check=True):
     return r.returncode, out
 
 
+def read_text_tolerantly(path):
+    """PowerShell writes UTF-16 with a BOM by default, Notepad adds a UTF-8 BOM,
+    and redirects can leave trailing whitespace. Accept all of it."""
+    raw = open(path, "rb").read()
+    for bom, enc in ((b"\xff\xfe", "utf-16-le"), (b"\xfe\xff", "utf-16-be"),
+                     (b"\xef\xbb\xbf", "utf-8-sig")):
+        if raw.startswith(bom):
+            return raw.decode(enc, errors="replace").lstrip("﻿").strip()
+    return raw.decode("utf-8", errors="replace").strip()
+
+
 def load_token():
     tok = os.environ.get("GITHUB_TOKEN", "").strip()
     if tok:
         return tok
     if os.path.exists(TOKEN_FILE):
-        tok = open(TOKEN_FILE, encoding="utf-8").read().strip()
+        tok = read_text_tolerantly(TOKEN_FILE)
+        if tok in ("%t%", "$t"):
+            fail(
+                f"{TOKEN_FILE} contains the literal text {tok!r}, not a token",
+                "The shell did not expand the variable. In PowerShell run:\n"
+                '  $t = Read-Host "paste token"\n'
+                f'  Set-Content -Path "{TOKEN_FILE}" -Value $t -NoNewline -Encoding ascii',
+            )
         if tok:
             return tok
     fail(
