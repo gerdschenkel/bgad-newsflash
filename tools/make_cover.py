@@ -182,10 +182,6 @@ def build_card(date_str):
     d.rounded_rectangle([x, 448, x + tw + 40, 504], radius=28, fill=WHITE)
     d.text((x + 20, 459), pretty, font=f_date, fill=DARK)
 
-    # Call to action, so the card reads as something to open
-    d.text((x, 542), "Read the full briefing at bgadconsulting.com",
-           font=font(F_REG, 21), fill=(178, 214, 246))
-
     out = os.path.join(COVERS, f"{date_str}.png")
     card.save(out, "PNG", optimize=True)
     return out
