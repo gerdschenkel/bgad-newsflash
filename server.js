@@ -31,11 +31,76 @@ function issueList() {
     .reverse();
 }
 
+// Pull one meta tag value out of an issue's HTML. Issues are generated from
+// tools/template.html so the attribute order is stable, but match both orders
+// anyway in case the template is ever hand-edited.
+function meta(html, prop) {
+  const patterns = [
+    new RegExp('<meta[^>]+(?:property|name)="' + prop + '"[^>]+content="([^"]*)"', 'i'),
+    new RegExp('<meta[^>]+content="([^"]*)"[^>]+(?:property|name)="' + prop + '"', 'i'),
+  ];
+  for (const re of patterns) {
+    const m = html.match(re);
+    if (m) return m[1];
+  }
+  return null;
+}
+
+// Cache the parsed archive and rebuild only when the issues directory changes,
+// so this stays cheap as the archive grows.
+let archiveCache = { key: null, data: null };
+
+function archive(origin) {
+  const files = issueList();
+  const key = files.join(',');
+  if (archiveCache.key !== key) {
+    archiveCache = {
+      key,
+      data: files.map(f => {
+        const date = f.replace('.html', '');
+        let html = '';
+        try {
+          html = fs.readFileSync(path.join(ISSUES, f), 'utf8');
+        } catch (e) {
+          html = '';
+        }
+        const coverFile = path.join(ROOT, 'assets', 'covers', date + '.png');
+        return {
+          date,
+          title: meta(html, 'og:title') || ('BGAD News Flash, ' + date),
+          description: meta(html, 'og:description') || '',
+          path: '/issues/' + f,
+          coverPath: fs.existsSync(coverFile) ? '/assets/covers/' + date + '.png' : null,
+        };
+      }),
+    };
+  }
+  // Absolute URLs are resolved per request from the Host header, so this keeps
+  // working unchanged when the service moves to newsflash.bgadconsulting.com.
+  return archiveCache.data.map(it => ({
+    date: it.date,
+    title: it.title,
+    description: it.description,
+    url: origin + it.path,
+    cover: it.coverPath ? origin + it.coverPath : null,
+  }));
+}
+
+function originOf(req) {
+  const host = (req.headers.host || 'localhost:' + PORT).split(',')[0].trim();
+  const proto = (req.headers['x-forwarded-proto'] || '').split(',')[0].trim() ||
+    (host.startsWith('localhost') || host.startsWith('127.0.0.1') ? 'http' : 'https');
+  return proto + '://' + host;
+}
+
 function send(res, code, body, type) {
   res.writeHead(code, {
     'Content-Type': type || 'text/plain; charset=utf-8',
     'Cache-Control': 'public, max-age=300',
     'X-Content-Type-Options': 'nosniff',
+    // Everything here is public, and www.bgadconsulting.com reads the archive
+    // cross-origin to render its News Flash section.
+    'Access-Control-Allow-Origin': '*',
   });
   res.end(body);
 }
@@ -58,7 +123,15 @@ const server = http.createServer((req, res) => {
   }
 
   if (urlPath === '/archive.json') {
-    return send(res, 200, JSON.stringify({ issues: issueList() }, null, 2), TYPES['.json']);
+    const items = archive(originOf(req));
+    return send(res, 200, JSON.stringify({
+      updated: new Date().toISOString(),
+      count: items.length,
+      latest: items[0] || null,
+      issues: items,
+      // Kept so anything built against the original flat list still works.
+      files: issueList(),
+    }, null, 2), TYPES['.json']);
   }
 
   if (urlPath === '/archive') {
