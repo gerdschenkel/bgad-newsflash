@@ -15,6 +15,9 @@
       Name three or four concrete stories and end with an invitation to open it.
       Do not just repeat the standing subtitle.
     - No em-dashes or en-dashes anywhere.
+    - The "Subscribe to our updates" call to action sits between the last entry
+      and the footer, and links to the BGAD Consulting LinkedIn page at
+      https://www.linkedin.com/company/bgad/. It appears in every issue. Keep it.
 
   Placeholders:
     {{DATE_ISO}}        2026-08-14
@@ -68,6 +71,10 @@
   .src { font-style:italic; font-size:13.5px; color:var(--gray); }
   .src a { color:var(--gray); text-decoration:none; }
   .src a:hover { text-decoration:underline; }
+  .cta { text-align:center; margin:4px 0 20px; }
+  .cta a { display:inline-block; background:var(--blue); color:#fff; text-decoration:none;
+           font-weight:bold; font-size:15px; padding:11px 26px; border-radius:4px; }
+  .cta a:hover { background:var(--dark); }
   footer { border-top:1.5px solid var(--blue); margin-top:10px; padding:10px 0 20px;
            display:flex; justify-content:space-between; font-size:13px; }
   footer .site { font-weight:bold; color:var(--blue); text-decoration:none; }
@@ -95,6 +102,10 @@
   <p class="src"><a href="{{EPISODE_URL}}">Source: {{PODCAST}}, {{DATE}}, {{EPISODE_TITLE}}</a></p>
 </article>
 <!-- end repeat -->
+
+  <div class="cta">
+    <a href="https://www.linkedin.com/company/bgad/">Subscribe to our updates</a>
+  </div>
 
   <footer>
     <a class="site" href="https://bgadconsulting.com">bgadconsulting.com</a>
