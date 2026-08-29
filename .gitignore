@@ -1,5 +1,9 @@
 node_modules/
 .env
 
+# Bytecode from running anything in tools/
+__pycache__/
+*.pyc
+
 # GitHub token used by tools/publish.py. Never commit this.
 .github-token

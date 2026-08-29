@@ -84,6 +84,21 @@ def load_token():
     )
 
 
+def prune():
+    """Trim the archive to its rolling window. Never blocks a publish: a failure
+    here means some old files linger, which matters far less than today's issue
+    going out, so it is reported and stepped over."""
+    script = os.path.join(ROOT, "tools", "prune_archive.py")
+    if not os.path.exists(script):
+        return
+    r = subprocess.run([sys.executable, script], capture_output=True, text=True)
+    out = (r.stdout + r.stderr).strip()
+    if out:
+        print(out)
+    if r.returncode != 0:
+        print("continuing with the publish despite the prune failure", file=sys.stderr)
+
+
 def main():
     token = load_token()
     if not re.match(r"^(github_pat_|ghp_)[A-Za-z0-9_]+$", token):
@@ -111,6 +126,12 @@ def main():
         fail("dry run push failed\n" + out)
 
     message = sys.argv[1] if len(sys.argv) > 1 else "News Flash update"
+
+    # Trim the archive to its rolling window before staging, so the removals
+    # ride along in the same commit as the new issue rather than dangling as
+    # uncommitted deletions. Pass --no-prune to publish an issue without it.
+    if "--no-prune" not in sys.argv:
+        prune()
 
     git("config", "core.fileMode", "false", token=token)
     git("add", "-A", token=token)
