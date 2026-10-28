@@ -45,3 +45,9 @@ removed  public\issues\2026-09-26.html  18 KB
 committed: News Flash 2026-10-26
 pushed fbeb1aa to main. Railway will redeploy in about a minute.
 ======== Tue 27/10/2026  8:15:02.38 ========
+archive within the 30 day window (nothing before 2026-09-28), nothing to prune
+committed: News Flash 2026-10-27
+pushed 05303e6 to main. Railway will redeploy in about a minute.
+======== Wed 28/10/2026 10:04:16.19 ========
+continuing with the publish despite the prune failure
+======== Thu 29/10/2026  8:41:40.00 ========
