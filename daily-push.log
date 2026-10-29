@@ -51,3 +51,10 @@ pushed 05303e6 to main. Railway will redeploy in about a minute.
 ======== Wed 28/10/2026 10:04:16.19 ========
 continuing with the publish despite the prune failure
 ======== Thu 29/10/2026  8:41:40.00 ========
+removed  public\assets\covers\2026-09-28.png  163 KB
+removed  public\issues\2026-09-28.html  20 KB
+removed  public\assets\covers\2026-09-29.png  163 KB
+removed  public\issues\2026-09-29.html  20 KB
+4 files, freed 366 KB, keeping 30 days from 2026-09-30
+committed: News Flash 2026-10-29
+pushed 036545e to main. Railway will redeploy in about a minute.
