@@ -63,3 +63,10 @@ archive within the 30 day window (nothing before 2026-10-01), nothing to prune
 committed: News Flash 2026-10-30
 pushed 9191189 to main. Railway will redeploy in about a minute.
 ======== Sat 31/10/2026  9:24:41.53 ========
+publish failed: push rejected
+
+removed  public\assets\covers\2026-10-01.png  164 KB
+removed  public\issues\2026-10-01.html  20 KB
+2 files, freed 183 KB, keeping 30 days from 2026-10-02
+committed: News Flash 2026-10-31
+======== Sun 01/11/2026 10:49:19.32 ========
