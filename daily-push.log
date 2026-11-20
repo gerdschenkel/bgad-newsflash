@@ -178,3 +178,9 @@ archive within the 30 day window (nothing before 2026-10-21), nothing to prune
 committed: News Flash 2026-11-19
 pushed 4782084 to main. Railway will redeploy in about a minute.
 ======== Fri 20/11/2026 10:49:46.56 ========
+removed  public\assets\covers\2026-10-21.png  169 KB
+removed  public\issues\2026-10-21.html  19 KB
+2 files, freed 188 KB, keeping 30 days from 2026-10-22
+committed: News Flash 2026-11-20
+pushed 87d2201 to main. Railway will redeploy in about a minute.
+======== Fri 20/11/2026 11:00:02.10 ========
