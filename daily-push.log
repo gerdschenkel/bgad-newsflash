@@ -266,3 +266,11 @@ archive within the 30 day window (nothing before 2026-10-24), nothing to prune
 committed: News Flash 2026-11-22
 pushed 496959b to main. Railway will redeploy in about a minute.
 ======== Mon 23/11/2026  8:36:32.97 ========
+could not fetch the remote, continuing with the local state
+fatal: unable to access 'https://github.com/gerdschenkel/bgad-newsflash.git/': Could not resolve host: github.com
+removed  public\assets\covers\2026-10-24.png  169 KB
+removed  public\issues\2026-10-24.html  22 KB
+2 files, freed 191 KB, keeping 30 days from 2026-10-25
+committed: News Flash 2026-11-23
+pushed daeed88 to main. Railway will redeploy in about a minute.
+======== Mon 23/11/2026 10:03:30.45 ========
