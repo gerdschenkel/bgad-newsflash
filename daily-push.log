@@ -437,3 +437,7 @@ removed  public\issues\2026-10-28.html  19 KB
 2 files, freed 185 KB, keeping 30 days from 2026-10-29
 committed: News Flash 2026-11-27
 ======== Fri 27/11/2026  9:00:02.00 ========
+archive within the 30 day window (nothing before 2026-10-29), nothing to prune
+committed: News Flash 2026-11-27
+pushed 530b359 to main. Railway will redeploy in about a minute.
+======== Fri 27/11/2026  9:10:49.35 ========
